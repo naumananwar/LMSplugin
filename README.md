@@ -2,6 +2,32 @@
 
 A comprehensive WordPress plugin for Learning Management System with advanced authentication, course management, assessment system, and subscription-based access control.
 
+## 🚀 New Features & Improvements
+
+### Performance Enhancements
+- **Cache Manager**: Intelligent caching system for courses, assessments, and user data
+- **Performance Monitor**: Real-time monitoring of page load times, memory usage, and database queries
+- **Database Optimization**: Automatic index creation and query optimization
+- **Data Cleanup**: Automated cleanup of old analytics and security logs
+
+### Security Improvements
+- **Security Manager**: Advanced security features including rate limiting and IP blocking
+- **Data Encryption**: Secure encryption for sensitive user data
+- **Failed Login Protection**: Automatic IP blocking after failed login attempts
+- **Input Validation**: Enhanced data sanitization and validation
+
+### API Integration
+- **REST API**: Complete REST API for mobile app integration
+- **Token Authentication**: Secure JWT-like token system for API access
+- **Rate Limiting**: API rate limiting to prevent abuse
+- **Comprehensive Endpoints**: Full CRUD operations for courses, assessments, and user data
+
+### Notification System
+- **Real-time Notifications**: In-app notification system with live updates
+- **Email Notifications**: Customizable email templates for various events
+- **Push Notifications**: Support for Firebase Cloud Messaging
+- **Notification Preferences**: User-configurable notification settings
+
 ## Features
 
 ### 🔐 Authentication & Access Control
@@ -10,6 +36,7 @@ A comprehensive WordPress plugin for Learning Management System with advanced au
 - **Role-based Dashboard Redirection**
 - **Subscription-based Access Control**
 - **Secure AJAX Authentication**
+- **Advanced Security Features**: Rate limiting, IP blocking, encryption
 
 ### 👥 User Management
 - **Three Distinct User Roles**:
@@ -24,6 +51,7 @@ A comprehensive WordPress plugin for Learning Management System with advanced au
 - **Free and Paid Courses**
 - **Progress Tracking**
 - **Frontend Course Creation Interface**
+- **Interactive Course Viewer** with notes, bookmarks, and progress tracking
 
 ### 📝 Advanced Assessment System
 - **Multiple Question Types**: Multiple Choice, True/False, Short Answer
@@ -48,6 +76,7 @@ A comprehensive WordPress plugin for Learning Management System with advanced au
   - User activity tracking
 - **Data Export** (CSV format)
 - **Real-time Statistics**
+- **Performance Monitoring**
 
 ### 🎨 Frontend Experience
 - **Role-specific Dashboards**
@@ -55,6 +84,33 @@ A comprehensive WordPress plugin for Learning Management System with advanced au
 - **AJAX-powered Interactions**
 - **Progress Tracking**
 - **Modern UI/UX**
+- **Real-time Notifications**
+
+### 🔧 Performance & Optimization
+- **Intelligent Caching System**
+- **Database Query Optimization**
+- **Memory Usage Monitoring**
+- **Automatic Data Cleanup**
+- **Performance Debug Information**
+
+### 🛡️ Security Features
+- **Rate Limiting**: Prevent brute force attacks
+- **IP Blocking**: Automatic blocking of malicious IPs
+- **Data Encryption**: Secure storage of sensitive information
+- **Security Event Logging**: Comprehensive security audit trail
+- **Input Validation**: Advanced XSS and injection protection
+
+### 📱 API & Mobile Support
+- **Complete REST API**: Full functionality available via API
+- **Token Authentication**: Secure API access
+- **Mobile App Ready**: Perfect for React Native, Flutter apps
+- **Real-time Sync**: Live data synchronization
+
+### 🔔 Notification System
+- **In-app Notifications**: Real-time notification bell with dropdown
+- **Email Notifications**: Customizable email templates
+- **Push Notifications**: Firebase Cloud Messaging support
+- **User Preferences**: Granular notification control
 
 ## Installation
 
@@ -113,6 +169,12 @@ A comprehensive WordPress plugin for Learning Management System with advanced au
 3. Enter API key in plugin settings
 4. Configure usage limits as needed
 
+### Push Notifications Setup
+1. Create Firebase project
+2. Generate FCM server key
+3. Add FCM API key to plugin settings
+4. Configure client-side Firebase SDK
+
 ## Usage
 
 ### For Institutions
@@ -120,18 +182,70 @@ A comprehensive WordPress plugin for Learning Management System with advanced au
 2. **Manage Users**: Assign roles, monitor activity
 3. **View Analytics**: Access comprehensive reporting dashboard
 4. **Export Data**: Download user data, results, and analytics
+5. **Monitor Performance**: Track system performance and security
 
 ### For Instructors
 1. **Create Courses**: Build comprehensive course content
 2. **Design Assessments**: Create manual or AI-generated questions
 3. **Manage Students**: Track progress and performance
 4. **Monitor Results**: View assessment analytics
+5. **Receive Notifications**: Get alerts for student activities
 
 ### For Students
 1. **Subscribe to Packages**: Choose appropriate subscription
 2. **Enroll in Courses**: Access included content
 3. **Take Assessments**: Complete evaluations
 4. **Track Progress**: Monitor learning journey
+5. **Interactive Learning**: Use notes, bookmarks, and progress tracking
+
+## API Documentation
+
+### Authentication
+```bash
+# Login
+POST /wp-json/lms-auth/v1/auth/login
+{
+  "username": "user@example.com",
+  "password": "password"
+}
+
+# Register
+POST /wp-json/lms-auth/v1/auth/register
+{
+  "username": "newuser",
+  "email": "user@example.com",
+  "password": "password",
+  "role": "lms_student"
+}
+```
+
+### Courses
+```bash
+# Get courses
+GET /wp-json/lms-auth/v1/courses
+Authorization: Bearer {token}
+
+# Get single course
+GET /wp-json/lms-auth/v1/courses/{id}
+Authorization: Bearer {token}
+```
+
+### Assessments
+```bash
+# Start assessment
+POST /wp-json/lms-auth/v1/assessments/{id}/start
+Authorization: Bearer {token}
+
+# Submit assessment
+POST /wp-json/lms-auth/v1/assessments/{id}/submit
+Authorization: Bearer {token}
+{
+  "answers": {
+    "0": {"answer": "option1"},
+    "1": {"answer": "true"}
+  }
+}
+```
 
 ## Custom Post Types
 
@@ -148,6 +262,8 @@ A comprehensive WordPress plugin for Learning Management System with advanced au
 - **lms_course_enrollments**: Course enrollment data
 - **lms_lesson_progress**: Lesson completion tracking
 - **lms_analytics**: Event tracking and analytics
+- **lms_notifications**: User notifications
+- **lms_security_logs**: Security event logging
 
 ## Shortcodes
 
@@ -161,6 +277,7 @@ A comprehensive WordPress plugin for Learning Management System with advanced au
 [lms_course_list]            // Course listing
 [lms_assessment_list]        // Assessment listing
 [lms_take_assessment]        // Assessment interface
+[lms_assessment id="123"]    // Specific assessment
 ```
 
 ## Hooks and Filters
@@ -171,6 +288,8 @@ do_action('lms_auth_after_login', $user_id);
 do_action('lms_auth_after_registration', $user_id);
 do_action('lms_assessment_completed', $user_id, $assessment_id, $result);
 do_action('lms_course_completed', $user_id, $course_id);
+do_action('lms_course_enrolled', $user_id, $course_id);
+do_action('lms_clear_cache');
 ```
 
 ### Filters
@@ -178,105 +297,45 @@ do_action('lms_course_completed', $user_id, $course_id);
 apply_filters('lms_auth_redirect_url', $url, $user_id);
 apply_filters('lms_assessment_questions', $questions, $assessment_id);
 apply_filters('lms_package_features', $features, $package_id);
+apply_filters('lms_notification_email_template', $template, $type);
 ```
-
-## API Endpoints
-
-### AJAX Actions
-- `lms_login_user`: Handle login
-- `lms_register_user`: Handle registration
-- `lms_social_login`: Social media authentication
-- `lms_subscribe_package`: Package subscription
-- `lms_start_assessment`: Begin assessment
-- `lms_submit_assessment`: Submit completed assessment
-- `lms_get_analytics_data`: Fetch analytics
-- `lms_export_data`: Export data
-
-## Security Features
-
-- **Nonce Verification**: All AJAX requests protected
-- **Capability Checks**: Role-based access control
-- **Data Sanitization**: Input validation and sanitization
-- **SQL Injection Prevention**: Prepared statements
-- **XSS Protection**: Output escaping
 
 ## Performance Optimization
 
-- **Lazy Loading**: Assets loaded only when needed
-- **Database Indexing**: Optimized database queries
-- **Caching Ready**: Compatible with caching plugins
-- **Minified Assets**: Compressed CSS/JS files
+### Caching
+- **Object Caching**: WordPress object cache integration
+- **Query Caching**: Database query result caching
+- **User Data Caching**: Course enrollments, progress, results
+- **Cache Invalidation**: Smart cache clearing on data updates
 
-## Compatibility
+### Database Optimization
+- **Automatic Indexing**: Creates indexes for common queries
+- **Query Monitoring**: Logs slow queries for optimization
+- **Data Cleanup**: Removes old analytics and logs
+- **Connection Pooling**: Efficient database connections
 
-- **WordPress**: 5.0+
-- **PHP**: 7.4+
-- **MySQL**: 5.6+
-- **Browsers**: Modern browsers (Chrome, Firefox, Safari, Edge)
+### Memory Management
+- **Memory Monitoring**: Tracks memory usage and alerts on high usage
+- **Garbage Collection**: Automatic cleanup of temporary data
+- **Resource Optimization**: Efficient resource allocation
 
-## Development
+## Security Features
 
-### Object-Oriented Architecture
-- **Namespace**: `LMS_Auth`
-- **Autoloading**: PSR-4 compatible
-- **Singleton Pattern**: Used for core classes
-- **Hooks System**: WordPress-native integration
+### Rate Limiting
+- **Login Attempts**: 5 attempts per 15 minutes
+- **API Calls**: 100 requests per hour
+- **Assessment Attempts**: 10 attempts per hour
 
-### File Structure
-```
-lms-authentication-system/
-├── assets/
-│   ├── css/
-│   │   └── frontend.css
-│   └── js/
-│       └── frontend.js
-├── includes/
-│   ├── classes/
-│   │   ├── Core/
-│   │   │   ├── Authentication.php
-│   │   │   ├── Database.php
-│   │   │   ├── Post_Types.php
-│   │   │   └── Roles.php
-│   │   ├── Frontend/
-│   │   │   └── Shortcodes.php
-│   │   └── Admin/
-│   └── functions/
-├── templates/
-│   ├── auth/
-│   ├── student/
-│   ├── instructor/
-│   └── institution/
-└── lms-authentication-system.php
-```
+### Data Protection
+- **Encryption**: AES-256-CBC encryption for sensitive data
+- **Secure Tokens**: Cryptographically secure token generation
+- **Input Validation**: Comprehensive XSS and injection protection
+- **CSRF Protection**: Nonce verification for all forms
 
-## Customization
-
-### Theme Integration
-Copy template files to your theme:
-```
-your-theme/lms-templates/[template-name].php
-```
-
-### Custom Styling
-Override default styles:
-```css
-.lms-auth-form {
-    /* Your custom styles */
-}
-```
-
-### Extending Functionality
-```php
-// Add custom user meta
-add_action('lms_auth_after_registration', function($user_id) {
-    update_user_meta($user_id, 'custom_field', 'value');
-});
-
-// Modify redirect URL
-add_filter('lms_auth_redirect_url', function($url, $user_id) {
-    return 'custom-url';
-}, 10, 2);
-```
+### Monitoring
+- **Security Logs**: Comprehensive audit trail
+- **Failed Login Tracking**: Automatic IP blocking
+- **Suspicious Activity Detection**: Real-time threat monitoring
 
 ## Troubleshooting
 
@@ -297,12 +356,27 @@ add_filter('lms_auth_redirect_url', function($url, $user_id) {
    - Verify database permissions
    - Review error logs
 
+4. **Performance Issues**
+   - Enable caching
+   - Check database indexes
+   - Monitor memory usage
+   - Review slow query logs
+
+5. **Notification Issues**
+   - Verify email settings
+   - Check FCM configuration
+   - Test notification preferences
+
 ### Debug Mode
 Enable WordPress debug mode in wp-config.php:
 ```php
 define('WP_DEBUG', true);
 define('WP_DEBUG_LOG', true);
+define('WP_DEBUG_DISPLAY', false);
 ```
+
+### Performance Monitoring
+Access performance information by adding `?debug=1` to any URL when logged in as administrator.
 
 ## Support
 
@@ -311,12 +385,26 @@ For support and documentation:
 - Review plugin settings
 - Test in a staging environment
 - Ensure all dependencies are met
+- Monitor performance metrics
+- Review security logs
 
 ## License
 
 GPL v2 or later
 
 ## Changelog
+
+### Version 1.1.0
+- Added comprehensive caching system
+- Implemented advanced security features
+- Added REST API with token authentication
+- Created notification system with real-time updates
+- Added performance monitoring and optimization
+- Implemented data encryption and security logging
+- Added mobile app support via API
+- Enhanced user experience with notifications
+- Improved database performance with automatic indexing
+- Added cleanup routines for old data
 
 ### Version 1.0.0
 - Initial release
@@ -330,5 +418,4 @@ GPL v2 or later
 
 ---
 
-**Note**: This plugin provides a complete foundation for a Learning Management System. Additional customization may be required based on specific needs. All payment gateway integrations should be thoroughly tested in sandbox environments before going live.
-
+**Note**: This plugin provides a complete foundation for a Learning Management System with enterprise-level features including performance monitoring, advanced security, API integration, and real-time notifications. All payment gateway integrations should be thoroughly tested in sandbox environments before going live.
